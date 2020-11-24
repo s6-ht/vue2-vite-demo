@@ -2,6 +2,7 @@
   "name": "x-project",
   "version": "0.1.0",
   "private": true,
+  "author": "s6-ht",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

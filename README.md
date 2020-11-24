@@ -1,4 +1,5 @@
 # x-project
+用于记录日常小demo
 
 ## Project setup
 ```
@@ -27,3 +28,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+#### TODO:
+- commit 时eslint校验
+- 项目结构转换为ts
