@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <button @click="HandleError">报错</button>
     </div>
     <router-view />
   </div>
@@ -10,8 +11,12 @@
 
 <script>
 export default {
+  created() {
+  },
   methods: {
-    click () {}
+    HandleError () {
+      console.log(a)
+    }
   }
 }
 </script>
