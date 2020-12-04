@@ -2,8 +2,6 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-      <button @click="HandleError">报错</button>
     </div>
     <router-view />
   </div>
@@ -12,10 +10,12 @@
 <script>
 export default {
   created() {
+    // this.testApi()
   },
   methods: {
-    HandleError () {
-      console.log(a)
+    async testApi() {
+      const data = await this.$axios('test')
+      console.error(data);
     }
   }
 }
