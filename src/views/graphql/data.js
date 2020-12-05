@@ -1,39 +1,28 @@
 // graphql-tag 用来将string转化为graphql的AST
 import gql from 'graphql-tag'
-import apolloClient from '@/utils/apollo-boost'
+import apolloClient from '@/apollo'
 
-export function getGoodsList(params) {
+export function getGoodInfo(params) {
   return apolloClient.query({
-    query: gql`query ($first: ID) {
-      goodsList(first: $first) {
-        id
+    query: gql`query ($infoId: Int!) {
+      goods(infoId: $infoId) {
         title
         content
-        author {
-          name
-          age
-        }
+        price
+        image
       }
     }`,
     variables: params
   })
 }
 
-export function createGoods(params) {
+export function addGoods(params) {
   return apolloClient.mutate({
-    mutation: gql`mutation ($title: String, $content: String, $author: AddAuthor) {
-      addGoods(title: $title, content: $content, author: $author) {
-        id
-        title
-        content
-        author {
-          age
-          name
-        }
+    mutation: gql`mutation ($infoId: Int!, $title: String!, $content: String!, $special: String! $price: Int!, $image: String!) {
+      addGoods(infoId: $infoId, title: $title, content: $content, special: $special, price: $price, image: $image ) {
+        message
       }
     }`,
-    variables: param
+    variables: params
   })
 }
-
-

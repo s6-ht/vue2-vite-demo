@@ -2,13 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueApollo from 'vue-apollo'
-import apolloClient from './utils/apollo-boost'
+import apolloClient from './apollo'
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 })
-Vue.use(VueApollo)
 
+Vue.use(VueApollo)
 Vue.config.productionTip = false
 
 new Vue({

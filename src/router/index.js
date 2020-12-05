@@ -1,14 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import graphqlDemo from '../views/graphql/index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/graphql-demo',
-    name: 'graphql-demo',
-    component: graphqlDemo
+    path: '/',
+    redirect: {
+      name: 'graphql'
+    }
+  },
+  {
+    path: '/graphql',
+    name: 'graphql',
+    component: () => import('@/views/graphql/index.vue')
   }
 ]
 

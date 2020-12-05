@@ -9,9 +9,6 @@
 
 <script>
 export default {
-  created() {
-    // this.testApi()
-  },
   methods: {
     async testApi() {
       const data = await this.$axios('test')

@@ -1,28 +1,36 @@
 <template>
-  <div class="graphql-wrap"></div>
+  <section>graphql</section>
 </template>
 
 <script>
-import { getArticleList, createArticle } from './data'
+import { getGoodInfo, addGoods } from './data'
 export default {
-  name: 'GraphqlDemo',
-  data() {
+  data () {
     return {
-      formData: {}
+      infoId: 2
     }
   },
-  created() {
-    this.getArticleList()
+  created () {
+    this.addGoods()
+    this.getGoodInfo()
   },
   methods: {
-    getArticleList() {
-      getArticleList({ first: 0 }).then(res => {
-        console.error(res, 'getArticleList')
+    getGoodInfo () {
+      getGoodInfo({ infoId: this.infoId }).then(res => {
+        console.error(res);
       })
     },
-    createArticle() {
-      createArticle(this.formData).then(res => {
-        console.error(res, 'createArticle')
+    addGoods () {
+      const params = {
+        infoId: 5,
+        title: '这是一件很漂亮的衣服5',
+        content: '～～～',
+        special: '---',
+        price: 66,
+        image: '999'
+      }
+      addGoods(params).then(res => {
+        console.error(res);
       })
     }
   }
