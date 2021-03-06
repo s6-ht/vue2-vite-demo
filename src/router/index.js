@@ -7,14 +7,29 @@ const routes = [
   {
     path: '/',
     redirect: {
-      name: 'graphql'
+      name: 'mermaid'
     }
+  },
+  {
+    path: '/mermaid',
+    name: 'mermaid',
+    component: () => import('@/views/flowchart/mermaid.vue')
   },
   {
     path: '/graphql',
     name: 'graphql',
     component: () => import('@/views/graphql/index.vue')
-  }
+  },
+  {
+    path: '/grid',
+    name: 'grid',
+    component: () => import('@/views/demo/grid.vue')
+  },
+  {
+    path: '/unit',
+    name: 'unit',
+    component: () => import('@/views/unit/index.vue')
+  },
 ]
 
 const router = new VueRouter({
