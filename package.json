@@ -2,7 +2,7 @@
   "name": "x-project",
   "version": "0.1.0",
   "private": true,
-  "author": "s6-ht",
+  "author": "",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,9 +10,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/generator": "^7.13.9",
+    "@babel/parser": "^7.13.9",
     "apollo-boost": "^0.4.9",
     "axios": "^0.21.0",
     "graphql": "^15.4.0",
+    "lodash": "^4.17.21",
     "mermaid": "^8.9.1",
     "vue": "^2.6.12",
     "vue-apollo": "^3.0.5",

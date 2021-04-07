@@ -29,7 +29,7 @@ const routes = [
     path: '/unit',
     name: 'unit',
     component: () => import('@/views/unit/index.vue')
-  },
+  }
 ]
 
 const router = new VueRouter({
