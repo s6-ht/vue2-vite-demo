@@ -18,7 +18,8 @@ import {
   tryCatchStatement,
   threeStatement,
   logicalOperator,
-  logicalOrOperator
+  logicalOrOperator,
+  functionExpression
 } from './sample'
 // import './testIndex'
 export default {

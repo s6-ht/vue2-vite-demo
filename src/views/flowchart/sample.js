@@ -109,8 +109,11 @@ function tryCatch() {
 `
 const threeStatement = `
 function threeStatement() {
-  let val = false
-  let res = val ? 5 : 9
+  const val = false
+  const isNeed = true
+  const isDemo = false
+  let isFlag = false
+  const res = val ? (isNeed ? (isFlag ? 5 : 6) : 10) : isDemo ? 6 : 2
   return res
 }
 `
@@ -130,9 +133,26 @@ function logicalOrOperator() {
   let flag = true
   let isForce = false
   let isNeed = true
-  let res = (isForce && isNeed) || flag
+  let isDemo = true
+  let  = true
+  let res = (isForce && isNeed) || (flag && isDemo && isText)
   return res
 }
+`
+
+const functionExpression = `
+  const functionExpression = function () {
+    var a = 1
+    console.log(1)
+    console.log(2)
+  }
+`
+const arrowFn = `
+  const arrowFn = function () {
+    var a = 1
+    console.log(1)
+    console.log(2)
+  }
 `
 
 export {
@@ -148,5 +168,7 @@ export {
   tryCatchStatement,
   threeStatement,
   logicalOperator,
-  logicalOrOperator
+  logicalOrOperator,
+  functionExpression,
+  arrowFn
 }
