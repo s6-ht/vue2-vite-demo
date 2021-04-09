@@ -14,7 +14,8 @@ import {
   tryCatchStatement,
   logicalOperator,
   logicalOrOperator,
-  functionExpression
+  functionExpression,
+  test
 } from './sample'
 
 function transformCodeToAst(codeStr) {
@@ -23,7 +24,7 @@ function transformCodeToAst(codeStr) {
     plugins: ['classProperties', 'asyncGenerators', 'jsx', 'typescript']
   })
 }
-console.log(JSON.stringify(transformCodeToAst(logicalOrOperator)))
+console.log(JSON.stringify(transformCodeToAst(test)))
 
 function isEmpty(value) {
   let flag = true
@@ -130,397 +131,387 @@ export function getMermain(code) {
 const obj = {
   type: 'File',
   start: 0,
-  end: 203,
-  loc: { start: { line: 1, column: 0 }, end: { line: 11, column: 0 } },
+  end: 260,
+  loc: { start: { line: 1, column: 0 }, end: { line: 15, column: 0 } },
   errors: [],
   program: {
     type: 'Program',
     start: 0,
-    end: 203,
-    loc: { start: { line: 1, column: 0 }, end: { line: 11, column: 0 } },
+    end: 260,
+    loc: { start: { line: 1, column: 0 }, end: { line: 15, column: 0 } },
     sourceType: 'module',
     interpreter: null,
     body: [
       {
         type: 'FunctionDeclaration',
-        start: 1,
-        end: 202,
-        loc: { start: { line: 2, column: 0 }, end: { line: 10, column: 1 } },
+        start: 4,
+        end: 259,
+        loc: { start: { line: 2, column: 3 }, end: { line: 14, column: 5 } },
         id: {
           type: 'Identifier',
-          start: 10,
-          end: 27,
+          start: 13,
+          end: 20,
           loc: {
-            start: { line: 2, column: 9 },
-            end: { line: 2, column: 26 },
-            identifierName: 'logicalOrOperator'
+            start: { line: 2, column: 12 },
+            end: { line: 2, column: 19 },
+            identifierName: 'test555'
           },
-          name: 'logicalOrOperator'
+          name: 'test555'
         },
         generator: false,
         async: false,
         params: [],
         body: {
           type: 'BlockStatement',
-          start: 30,
-          end: 202,
-          loc: { start: { line: 2, column: 29 }, end: { line: 10, column: 1 } },
+          start: 23,
+          end: 259,
+          loc: { start: { line: 2, column: 22 }, end: { line: 14, column: 5 } },
           body: [
             {
-              type: 'VariableDeclaration',
-              start: 34,
-              end: 49,
-              loc: {
-                start: { line: 3, column: 2 },
-                end: { line: 3, column: 17 }
-              },
-              declarations: [
-                {
-                  type: 'VariableDeclarator',
-                  start: 38,
-                  end: 49,
-                  loc: {
-                    start: { line: 3, column: 6 },
-                    end: { line: 3, column: 17 }
-                  },
-                  id: {
-                    type: 'Identifier',
-                    start: 38,
-                    end: 42,
-                    loc: {
-                      start: { line: 3, column: 6 },
-                      end: { line: 3, column: 10 },
-                      identifierName: 'flag'
-                    },
-                    name: 'flag'
-                  },
-                  init: {
-                    type: 'BooleanLiteral',
-                    start: 45,
-                    end: 49,
-                    loc: {
-                      start: { line: 3, column: 13 },
-                      end: { line: 3, column: 17 }
-                    },
-                    value: true
-                  }
-                }
-              ],
-              kind: 'let'
-            },
-            {
-              type: 'VariableDeclaration',
-              start: 52,
-              end: 71,
-              loc: {
-                start: { line: 4, column: 2 },
-                end: { line: 4, column: 21 }
-              },
-              declarations: [
-                {
-                  type: 'VariableDeclarator',
-                  start: 56,
-                  end: 71,
-                  loc: {
-                    start: { line: 4, column: 6 },
-                    end: { line: 4, column: 21 }
-                  },
-                  id: {
-                    type: 'Identifier',
-                    start: 56,
-                    end: 63,
-                    loc: {
-                      start: { line: 4, column: 6 },
-                      end: { line: 4, column: 13 },
-                      identifierName: 'isForce'
-                    },
-                    name: 'isForce'
-                  },
-                  init: {
-                    type: 'BooleanLiteral',
-                    start: 66,
-                    end: 71,
-                    loc: {
-                      start: { line: 4, column: 16 },
-                      end: { line: 4, column: 21 }
-                    },
-                    value: false
-                  }
-                }
-              ],
-              kind: 'let'
-            },
-            {
-              type: 'VariableDeclaration',
-              start: 74,
-              end: 91,
-              loc: {
-                start: { line: 5, column: 2 },
-                end: { line: 5, column: 19 }
-              },
-              declarations: [
-                {
-                  type: 'VariableDeclarator',
-                  start: 78,
-                  end: 91,
-                  loc: {
-                    start: { line: 5, column: 6 },
-                    end: { line: 5, column: 19 }
-                  },
-                  id: {
-                    type: 'Identifier',
-                    start: 78,
-                    end: 84,
-                    loc: {
-                      start: { line: 5, column: 6 },
-                      end: { line: 5, column: 12 },
-                      identifierName: 'isNeed'
-                    },
-                    name: 'isNeed'
-                  },
-                  init: {
-                    type: 'BooleanLiteral',
-                    start: 87,
-                    end: 91,
-                    loc: {
-                      start: { line: 5, column: 15 },
-                      end: { line: 5, column: 19 }
-                    },
-                    value: true
-                  }
-                }
-              ],
-              kind: 'let'
-            },
-            {
-              type: 'VariableDeclaration',
-              start: 94,
-              end: 111,
-              loc: {
-                start: { line: 6, column: 2 },
-                end: { line: 6, column: 19 }
-              },
-              declarations: [
-                {
-                  type: 'VariableDeclarator',
-                  start: 98,
-                  end: 111,
-                  loc: {
-                    start: { line: 6, column: 6 },
-                    end: { line: 6, column: 19 }
-                  },
-                  id: {
-                    type: 'Identifier',
-                    start: 98,
-                    end: 104,
-                    loc: {
-                      start: { line: 6, column: 6 },
-                      end: { line: 6, column: 12 },
-                      identifierName: 'isDemo'
-                    },
-                    name: 'isDemo'
-                  },
-                  init: {
-                    type: 'BooleanLiteral',
-                    start: 107,
-                    end: 111,
-                    loc: {
-                      start: { line: 6, column: 15 },
-                      end: { line: 6, column: 19 }
-                    },
-                    value: true
-                  }
-                }
-              ],
-              kind: 'let'
-            },
-            {
               type: 'ExpressionStatement',
-              start: 114,
-              end: 125,
+              start: 31,
+              end: 235,
               loc: {
-                start: { line: 7, column: 2 },
-                end: { line: 7, column: 13 }
+                start: { line: 3, column: 6 },
+                end: { line: 12, column: 7 }
               },
               expression: {
                 type: 'AssignmentExpression',
-                start: 114,
-                end: 125,
+                start: 31,
+                end: 235,
                 loc: {
-                  start: { line: 7, column: 2 },
-                  end: { line: 7, column: 13 }
+                  start: { line: 3, column: 6 },
+                  end: { line: 12, column: 7 }
                 },
                 operator: '=',
                 left: {
                   type: 'Identifier',
-                  start: 114,
-                  end: 117,
+                  start: 31,
+                  end: 35,
                   loc: {
-                    start: { line: 7, column: 2 },
-                    end: { line: 7, column: 5 },
-                    identifierName: 'let'
+                    start: { line: 3, column: 6 },
+                    end: { line: 3, column: 10 },
+                    identifierName: 'html'
                   },
-                  name: 'let'
+                  name: 'html'
                 },
                 right: {
-                  type: 'BooleanLiteral',
-                  start: 121,
-                  end: 125,
+                  type: 'CallExpression',
+                  start: 38,
+                  end: 235,
                   loc: {
-                    start: { line: 7, column: 9 },
-                    end: { line: 7, column: 13 }
+                    start: { line: 3, column: 13 },
+                    end: { line: 12, column: 7 }
                   },
-                  value: true
+                  callee: {
+                    type: 'MemberExpression',
+                    start: 38,
+                    end: 50,
+                    loc: {
+                      start: { line: 3, column: 13 },
+                      end: { line: 3, column: 25 }
+                    },
+                    object: {
+                      type: 'Identifier',
+                      start: 38,
+                      end: 42,
+                      loc: {
+                        start: { line: 3, column: 13 },
+                        end: { line: 3, column: 17 },
+                        identifierName: 'html'
+                      },
+                      name: 'html'
+                    },
+                    computed: false,
+                    property: {
+                      type: 'Identifier',
+                      start: 43,
+                      end: 50,
+                      loc: {
+                        start: { line: 3, column: 18 },
+                        end: { line: 3, column: 25 },
+                        identifierName: 'replace'
+                      },
+                      name: 'replace'
+                    }
+                  },
+                  arguments: [
+                    {
+                      type: 'RegExpLiteral',
+                      start: 60,
+                      end: 64,
+                      loc: {
+                        start: { line: 4, column: 8 },
+                        end: { line: 4, column: 12 }
+                      },
+                      extra: { raw: '/a/g' },
+                      pattern: 'a',
+                      flags: 'g'
+                    },
+                    {
+                      type: 'ArrowFunctionExpression',
+                      start: 74,
+                      end: 227,
+                      loc: {
+                        start: { line: 5, column: 8 },
+                        end: { line: 11, column: 9 }
+                      },
+                      id: null,
+                      generator: false,
+                      async: false,
+                      params: [
+                        {
+                          type: 'Identifier',
+                          start: 75,
+                          end: 76,
+                          loc: {
+                            start: { line: 5, column: 9 },
+                            end: { line: 5, column: 10 },
+                            identifierName: 'm'
+                          },
+                          name: 'm'
+                        },
+                        {
+                          type: 'Identifier',
+                          start: 78,
+                          end: 80,
+                          loc: {
+                            start: { line: 5, column: 12 },
+                            end: { line: 5, column: 14 },
+                            identifierName: '$1'
+                          },
+                          name: '$1'
+                        },
+                        {
+                          type: 'Identifier',
+                          start: 82,
+                          end: 84,
+                          loc: {
+                            start: { line: 5, column: 16 },
+                            end: { line: 5, column: 18 },
+                            identifierName: '$2'
+                          },
+                          name: '$2'
+                        }
+                      ],
+                      body: {
+                        type: 'BlockStatement',
+                        start: 89,
+                        end: 227,
+                        loc: {
+                          start: { line: 5, column: 23 },
+                          end: { line: 11, column: 9 }
+                        },
+                        body: [
+                          {
+                            type: 'IfStatement',
+                            start: 101,
+                            end: 217,
+                            loc: {
+                              start: { line: 6, column: 10 },
+                              end: { line: 10, column: 11 }
+                            },
+                            test: {
+                              type: 'BinaryExpression',
+                              start: 105,
+                              end: 134,
+                              loc: {
+                                start: { line: 6, column: 14 },
+                                end: { line: 6, column: 43 }
+                              },
+                              left: {
+                                type: 'CallExpression',
+                                start: 105,
+                                end: 127,
+                                loc: {
+                                  start: { line: 6, column: 14 },
+                                  end: { line: 6, column: 36 }
+                                },
+                                callee: {
+                                  type: 'MemberExpression',
+                                  start: 105,
+                                  end: 115,
+                                  loc: {
+                                    start: { line: 6, column: 14 },
+                                    end: { line: 6, column: 24 }
+                                  },
+                                  object: {
+                                    type: 'Identifier',
+                                    start: 105,
+                                    end: 107,
+                                    loc: {
+                                      start: { line: 6, column: 14 },
+                                      end: { line: 6, column: 16 },
+                                      identifierName: '$2'
+                                    },
+                                    name: '$2'
+                                  },
+                                  computed: false,
+                                  property: {
+                                    type: 'Identifier',
+                                    start: 108,
+                                    end: 115,
+                                    loc: {
+                                      start: { line: 6, column: 17 },
+                                      end: { line: 6, column: 24 },
+                                      identifierName: 'indexOf'
+                                    },
+                                    name: 'indexOf'
+                                  }
+                                },
+                                arguments: [
+                                  {
+                                    type: 'StringLiteral',
+                                    start: 116,
+                                    end: 126,
+                                    loc: {
+                                      start: { line: 6, column: 25 },
+                                      end: { line: 6, column: 35 }
+                                    },
+                                    extra: {
+                                      rawValue: 'https://',
+                                      raw: "'https://'"
+                                    },
+                                    value: 'https://'
+                                  }
+                                ]
+                              },
+                              operator: '!==',
+                              right: {
+                                type: 'UnaryExpression',
+                                start: 132,
+                                end: 134,
+                                loc: {
+                                  start: { line: 6, column: 41 },
+                                  end: { line: 6, column: 43 }
+                                },
+                                operator: '-',
+                                prefix: true,
+                                argument: {
+                                  type: 'NumericLiteral',
+                                  start: 133,
+                                  end: 134,
+                                  loc: {
+                                    start: { line: 6, column: 42 },
+                                    end: { line: 6, column: 43 }
+                                  },
+                                  extra: { rawValue: 1, raw: '1' },
+                                  value: 1
+                                }
+                              }
+                            },
+                            consequent: {
+                              type: 'BlockStatement',
+                              start: 136,
+                              end: 176,
+                              loc: {
+                                start: { line: 6, column: 45 },
+                                end: { line: 8, column: 11 }
+                              },
+                              body: [
+                                {
+                                  type: 'ReturnStatement',
+                                  start: 150,
+                                  end: 164,
+                                  loc: {
+                                    start: { line: 7, column: 12 },
+                                    end: { line: 7, column: 26 }
+                                  },
+                                  argument: {
+                                    type: 'BinaryExpression',
+                                    start: 157,
+                                    end: 164,
+                                    loc: {
+                                      start: { line: 7, column: 19 },
+                                      end: { line: 7, column: 26 }
+                                    },
+                                    left: {
+                                      type: 'Identifier',
+                                      start: 157,
+                                      end: 159,
+                                      loc: {
+                                        start: { line: 7, column: 19 },
+                                        end: { line: 7, column: 21 },
+                                        identifierName: '$1'
+                                      },
+                                      name: '$1'
+                                    },
+                                    operator: '+',
+                                    right: {
+                                      type: 'Identifier',
+                                      start: 162,
+                                      end: 164,
+                                      loc: {
+                                        start: { line: 7, column: 24 },
+                                        end: { line: 7, column: 26 },
+                                        identifierName: '$2'
+                                      },
+                                      name: '$2'
+                                    }
+                                  }
+                                }
+                              ],
+                              directives: []
+                            },
+                            alternate: {
+                              type: 'BlockStatement',
+                              start: 182,
+                              end: 217,
+                              loc: {
+                                start: { line: 8, column: 17 },
+                                end: { line: 10, column: 11 }
+                              },
+                              body: [
+                                {
+                                  type: 'ReturnStatement',
+                                  start: 196,
+                                  end: 205,
+                                  loc: {
+                                    start: { line: 9, column: 12 },
+                                    end: { line: 9, column: 21 }
+                                  },
+                                  argument: {
+                                    type: 'Identifier',
+                                    start: 203,
+                                    end: 205,
+                                    loc: {
+                                      start: { line: 9, column: 19 },
+                                      end: { line: 9, column: 21 },
+                                      identifierName: '$1'
+                                    },
+                                    name: '$1'
+                                  }
+                                }
+                              ],
+                              directives: []
+                            }
+                          }
+                        ],
+                        directives: []
+                      }
+                    }
+                  ]
                 }
               }
             },
             {
-              type: 'VariableDeclaration',
-              start: 128,
-              end: 187,
-              loc: {
-                start: { line: 8, column: 2 },
-                end: { line: 8, column: 61 }
-              },
-              declarations: [
-                {
-                  type: 'VariableDeclarator',
-                  start: 132,
-                  end: 187,
-                  loc: {
-                    start: { line: 8, column: 6 },
-                    end: { line: 8, column: 61 }
-                  },
-                  id: {
-                    type: 'Identifier',
-                    start: 132,
-                    end: 135,
-                    loc: {
-                      start: { line: 8, column: 6 },
-                      end: { line: 8, column: 9 },
-                      identifierName: 'res'
-                    },
-                    name: 'res'
-                  },
-                  init: {
-                    type: 'LogicalExpression',
-                    start: 138,
-                    end: 187,
-                    loc: {
-                      start: { line: 8, column: 12 },
-                      end: { line: 8, column: 61 }
-                    },
-                    left: {
-                      type: 'LogicalExpression',
-                      start: 139,
-                      end: 156,
-                      loc: {
-                        start: { line: 8, column: 13 },
-                        end: { line: 8, column: 30 }
-                      },
-                      extra: { parenthesized: true, parenStart: 138 },
-                      left: {
-                        type: 'Identifier',
-                        start: 139,
-                        end: 146,
-                        loc: {
-                          start: { line: 8, column: 13 },
-                          end: { line: 8, column: 20 },
-                          identifierName: 'isForce'
-                        },
-                        name: 'isForce'
-                      },
-                      operator: '&&',
-                      right: {
-                        type: 'Identifier',
-                        start: 150,
-                        end: 156,
-                        loc: {
-                          start: { line: 8, column: 24 },
-                          end: { line: 8, column: 30 },
-                          identifierName: 'isNeed'
-                        },
-                        name: 'isNeed'
-                      }
-                    },
-                    operator: '||',
-                    right: {
-                      type: 'LogicalExpression',
-                      start: 162,
-                      end: 186,
-                      loc: {
-                        start: { line: 8, column: 36 },
-                        end: { line: 8, column: 60 }
-                      },
-                      extra: { parenthesized: true, parenStart: 161 },
-                      left: {
-                        type: 'LogicalExpression',
-                        start: 162,
-                        end: 176,
-                        loc: {
-                          start: { line: 8, column: 36 },
-                          end: { line: 8, column: 50 }
-                        },
-                        left: {
-                          type: 'Identifier',
-                          start: 162,
-                          end: 166,
-                          loc: {
-                            start: { line: 8, column: 36 },
-                            end: { line: 8, column: 40 },
-                            identifierName: 'flag'
-                          },
-                          name: 'flag'
-                        },
-                        operator: '&&',
-                        right: {
-                          type: 'Identifier',
-                          start: 170,
-                          end: 176,
-                          loc: {
-                            start: { line: 8, column: 44 },
-                            end: { line: 8, column: 50 },
-                            identifierName: 'isDemo'
-                          },
-                          name: 'isDemo'
-                        }
-                      },
-                      operator: '&&',
-                      right: {
-                        type: 'Identifier',
-                        start: 180,
-                        end: 186,
-                        loc: {
-                          start: { line: 8, column: 54 },
-                          end: { line: 8, column: 60 },
-                          identifierName: 'isText'
-                        },
-                        name: 'isText'
-                      }
-                    }
-                  }
-                }
-              ],
-              kind: 'let'
-            },
-            {
               type: 'ReturnStatement',
-              start: 190,
-              end: 200,
+              start: 242,
+              end: 253,
               loc: {
-                start: { line: 9, column: 2 },
-                end: { line: 9, column: 12 }
+                start: { line: 13, column: 6 },
+                end: { line: 13, column: 17 }
               },
               argument: {
                 type: 'Identifier',
-                start: 197,
-                end: 200,
+                start: 249,
+                end: 253,
                 loc: {
-                  start: { line: 9, column: 9 },
-                  end: { line: 9, column: 12 },
-                  identifierName: 'res'
+                  start: { line: 13, column: 13 },
+                  end: { line: 13, column: 17 },
+                  identifierName: 'html'
                 },
-                name: 'res'
+                name: 'html'
               }
             }
           ],

@@ -155,6 +155,33 @@ const arrowFn = `
   }
 `
 
+const test = `
+   function test555() {
+      const getWebViewContent = (context, tempPath) => {
+      const resourcePath = getExtensionFileAbsolutePath(tempPath, context)
+      const dirPath = path.dirname(resourcePath)
+      let html = fse.readFileSync(resourcePath, 'utf-8')
+      html = html.replace(
+        /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
+        (m, $1, $2) => {
+          if ($2.indexOf('https://') !== -1) {
+            return $1 + $2
+          } else {
+            return (
+              $1 +
+              vscode.Uri.file(path.resolve(dirPath, $2))
+                .with({ scheme: 'vscode-resource' })
+                .toString() +
+              '"'
+            )
+          }
+        }
+      )
+      return html
+    }
+    }
+`
+
 export {
   ifStatement,
   ifStatement1,
@@ -170,5 +197,6 @@ export {
   logicalOperator,
   logicalOrOperator,
   functionExpression,
-  arrowFn
+  arrowFn,
+  test
 }

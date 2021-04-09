@@ -18,7 +18,7 @@ const line = {
   arrw: true
 }
 
-const allJudgeNodes = []
+const arrLoopMethods = ['forEach']
 
 function getUuid() {
   var s = []
@@ -40,27 +40,9 @@ function isNullOrUndefined(val) {
   return false
 }
 
-function isEmpty(value) {
-  let flag = true
-  if (Array.isArray(value) && JSON.stringify(value) !== '[]') {
-    flag = false
-  }
-  if (
-    Object.prototype.toString.call(value) === '[object Object]' &&
-    JSON.stringify(value) !== '{}'
-  ) {
-    flag = false
-  }
-  return flag
-}
-
-function makeIdFromAstNode(astNode) {
-  return `froml${astNode.loc.start.line}c${astNode.loc.start.column}tol${astNode.loc.end.line}c${astNode.loc.end.column}`
-}
-
 function setNodeName(statement, prefix) {
   const text = isNullOrUndefined(statement.id)
-    ? makeIdFromAstNode(statement)
+    ? getUuid()
     : generate(statement.id).code
   return `${prefix}${text}`
 }
@@ -167,6 +149,8 @@ function delSemi(str) {
   return str.replace(';', '')
 }
 
+let assignmentPrefix = ''
+
 function setType(statement) {
   switch (statement.type) {
     case 'File':
@@ -183,7 +167,7 @@ function setType(statement) {
       return transformAstToGraph(statement.body)
     case 'ClassProperty':
       const classPropertyNode = {
-        id: makeIdFromAstNode(statement),
+        id: getUuid(),
         name: replaceDoubleToSingleQuotes(generate(statement).code),
         shape: 'round'
       }
@@ -199,7 +183,7 @@ function setType(statement) {
     case 'FunctionDeclaration':
       console.log('function')
       // 设置标识父级id, 用于确定连线起始点
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       if (statement.body.type === 'BlockStatement') {
         statement.body.prevNodeId = statement.selfId
       }
@@ -222,6 +206,7 @@ function setType(statement) {
       return emptyGraph
     // function 声明后面的{ body  为数组
     case 'BlockStatement':
+      console.error(statement.prefix)
       if (
         statement.prevNodeId &&
         Array.isArray(statement.body) &&
@@ -229,46 +214,124 @@ function setType(statement) {
       ) {
         statement.body[0].prevNodeId = statement.prevNodeId
       }
-      return transformAstToGraph(statement.body)
-    case 'ArrowFunctionExpression':
-      return transformAstToGraph(statement.body)
-
-    case 'ExpressionStatement':
-      console.log('ExpressionStatement')
-      statement.selfId = makeIdFromAstNode(statement)
-      const expressionNode = {
-        id: statement.selfId,
-        name: generate(statement).code,
-        shape: 'round'
-      }
-      const expressionLine = []
-      if (statement.prevNodeId) {
-        expressionLine.push({
-          from: statement.prevNodeId,
-          to: statement.selfId,
-          name: '',
-          type: 'solid',
-          arrow: true
+      if (statement.prefix) {
+        statement.body.forEach(item => {
+          item.prefix = statement.prefix
         })
       }
+      return transformAstToGraph(statement.body)
+    case 'ArrowFunctionExpression':
+      console.error('ArrowFunctionExpression')
+      console.error(statement.prefix)
+      if (statement.prefix) {
+        statement.body.prefix = statement.prefix
+      }
+      return transformAstToGraph(statement.body)
+    case 'AssignmentExpression':
+      // 赋值节点表达式
+      statement.selfId = getUuid()
+      console.log('AssignmentExpression')
+      // 用于判断赋值表达式中得return节点的值的前缀
+      statement.right.prefix = statement.left.name + statement.operator
+      assignmentPrefix = statement.left.name + statement.operator
+      // console.error(statement.right.prefix)
+      if (statement.right.type === 'ConditionalExpression') {
+        statement.right.variableName = generate(statement.left).code
+      }
+      const {
+        nodes: assignmentExpressionNodes,
+        lines: assignmentExpressionLines,
+        entryNodes: assignmentExpressionEntryNodes,
+        exitNodes: assignmentExpressionExitNodes
+      } = transformAstToGraph(statement.right)
+      console.error(assignmentExpressionNodes)
+      let assignmentExpressionNode = []
+      if (!assignmentExpressionNodes.length) {
+        assignmentExpressionNode = [
+          {
+            id: statement.selfId,
+            name: generate(statement).code,
+            // name: name,
+            shape: 'round'
+          }
+        ]
+      }
+      console.error([...assignmentExpressionLines])
       return {
-        nodes: [expressionNode],
-        lines: [...expressionLine],
-        entryNodes: [expressionNode],
-        exitNodes: [expressionNode],
+        nodes: [...assignmentExpressionNode, ...assignmentExpressionNodes],
+        lines: [...assignmentExpressionLines],
+        entryNodes: [
+          ...assignmentExpressionNode,
+          ...assignmentExpressionEntryNodes
+        ],
+        exitNodes: [
+          ...assignmentExpressionNode,
+          ...assignmentExpressionExitNodes
+        ],
+        breakNodes: [],
+        subNodes: []
+      }
+    case 'ExpressionStatement':
+      console.log('ExpressionStatement')
+      statement.selfId = getUuid()
+      const {
+        nodes: expressionStatNodes,
+        lines: expressionStatLines,
+        entryNodes: expressionStatEntryNodes,
+        exitNodes: expressionStatExitNodes
+      } = transformAstToGraph(statement.expression)
+      let expressionNode = []
+      if (!expressionStatNodes.length) {
+        expressionNode = [
+          {
+            id: statement.selfId,
+            name: generate(statement).code,
+            shape: 'round'
+          }
+        ]
+      }
+      const expressionLine = []
+      // if (statement.prevNodeId) {
+      //   expressionLine.push({
+      //     from: statement.prevNodeId,
+      //     to: statement.selfId,
+      //     name: '',
+      //     type: 'solid',
+      //     arrow: true
+      //   })
+      // }
+      console.log([...expressionStatLines])
+      return {
+        nodes: [...expressionNode, ...expressionStatNodes],
+        lines: [...expressionLine, ...expressionStatLines],
+        entryNodes: [...expressionNode, ...expressionStatEntryNodes],
+        exitNodes: [...expressionNode, ...expressionStatExitNodes],
         breakNodes: [],
         subNodes: []
       }
     case 'IfStatement':
       // 找到其上一个节点, 与当前节点建立连线
       console.log('if')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const ifNode = {
         id: statement.selfId,
         name: replaceDoubleToSingleQuotes(
           `if(${generate(statement.test).code})`
         ),
-        shape: 'rhombus'
+        shape: 'square'
+      }
+      if (statement.prefix) {
+        if (statement.consequent) {
+          statement.consequent.body.forEach(item => {
+            item.prefix = statement.prefix
+          })
+          // statement.consequent.prefix = statement.prefix
+        }
+        if (statement.alternate) {
+          statement.alternate.body.forEach(item => {
+            item.prefix = statement.prefix
+          })
+        }
       }
       // 处理if为true时的语句 consequent中的body为数组
       const {
@@ -307,7 +370,7 @@ function setType(statement) {
           arrow: true
         })
       }
-
+      console.error([ifNode, ...consequentNodes, ...alternateNodes])
       // return 的数据就是每次body为数组时的collection
       return {
         nodes: [ifNode, ...consequentNodes, ...alternateNodes],
@@ -319,11 +382,12 @@ function setType(statement) {
         ],
         entryNodes: [ifNode],
         exitNodes: [...consequentExitNodes, ...alternateExitNodes],
+        breakNodes: [],
         subNodes: []
       }
     case 'ForStatement':
       console.log('for')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       // ; ${
       //   generate(statement.test).code
       // } ; ${generate(statement.update).code}
@@ -332,7 +396,7 @@ function setType(statement) {
         name: replaceDoubleToSingleQuotes(
           `for (${generate(statement.init).code})`
         ),
-        shape: 'rhombus'
+        shape: 'square'
       }
       console.log(forNode)
       const {
@@ -377,7 +441,7 @@ function setType(statement) {
     case 'ForInStatement':
     case 'ForOfStatement':
       console.log('for...in')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const forInNode = {
         id: statement.selfId,
         name: delSemi(
@@ -387,7 +451,7 @@ function setType(statement) {
             })`
           )
         ),
-        shape: 'rhombus'
+        shape: 'square'
       }
       console.log(forInNode)
       const {
@@ -519,7 +583,7 @@ function setType(statement) {
             ? [
                 {
                   name: 'try',
-                  id: makeIdFromAstNode(statement.block),
+                  id: getUuid(),
                   graph: {
                     nodes: blockNodes,
                     lines: blockLines,
@@ -535,7 +599,7 @@ function setType(statement) {
             ? [
                 {
                   name: 'finally',
-                  id: makeIdFromAstNode(statement.finalizer),
+                  id: getUuid(),
                   graph: {
                     nodes: finalizerNodes,
                     lines: finalizerEdges,
@@ -551,7 +615,7 @@ function setType(statement) {
             ? [
                 {
                   name: 'catch',
-                  id: makeIdFromAstNode(statement.handler),
+                  id: getUuid(),
                   graph: {
                     nodes: handlerNodes,
                     lines: handlerEdges,
@@ -567,7 +631,7 @@ function setType(statement) {
       }
     case 'WhileStatement':
       console.log('WhileStatement', statement)
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const whileNode = {
         id: statement.selfId,
         name: `while ${generate(statement.test).code}`,
@@ -613,7 +677,7 @@ function setType(statement) {
       }
     case 'DoWhileStatement':
       console.log('do...while')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const doWhileNode = {
         id: statement.selfId,
         name: `do while ${generate(statement.test).code}`,
@@ -673,18 +737,14 @@ function setType(statement) {
       const conditionTypes = [
         'ConditionalExpression',
         'LogicalExpression',
-        'FunctionExpression'
+        'FunctionExpression',
+        'ArrowFunctionExpression'
       ]
       statement.init.variableName = statement.id.name
       console.log(!conditionTypes.includes(statement.init.type))
       if (!conditionTypes.includes(statement.init.type)) {
         return { ...emptyGraph }
       } else {
-        // 表明第一层级的right
-        // if (statement.init.type === 'LogicalExpression') {
-        //   statement.init.right.isRight = true
-        //   console.log(statement)
-        // }
         const {
           nodes: declaratorBodyNodes,
           lines: declaratorBodyLines,
@@ -705,7 +765,11 @@ function setType(statement) {
     case 'VariableDeclaration':
       console.log('VariableDeclaration', statement)
       statement.selfId = getUuid()
-      const types = ['ConditionalExpression', 'FunctionExpression']
+      const types = [
+        'ConditionalExpression',
+        'FunctionExpression',
+        'ArrowFunctionExpression'
+      ]
       const literalsDeclarators = statement.declarations.filter(declarator => {
         return !types.includes(declarator.init.type)
       })
@@ -742,7 +806,7 @@ function setType(statement) {
     case 'SwitchStatement':
       // debugger
       console.log('switch')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const switchNode = {
         id: statement.selfId,
         name: `switch ${generate(statement.discriminant).code} `,
@@ -813,7 +877,7 @@ function setType(statement) {
       }
     case 'BreakStatement':
       console.log('break')
-      statement.selfId = makeIdFromAstNode(statement)
+      statement.selfId = getUuid()
       const breakNode = {
         id: statement.selfId,
         name: generate(statement).code,
@@ -829,17 +893,89 @@ function setType(statement) {
       }
     case 'ReturnStatement':
       console.log('return')
-      const returnNode = {
-        id: makeIdFromAstNode(statement),
-        name: replaceDoubleToSingleQuotes(generate(statement).code),
-        shape: 'asymetric',
-        style: { fill: '#99FF99' }
+      console.error(statement.prefix)
+      let returnNode = []
+      let returnExitNodes = []
+      if (statement.prefix) {
+        returnNode = [
+          {
+            id: getUuid(),
+            name:
+              statement.prefix +
+              replaceDoubleToSingleQuotes(generate(statement).code),
+            shape: 'square',
+            style: { fill: '#99FF99' }
+          }
+        ]
+        returnExitNodes = [...returnNode]
+      } else {
+        returnNode = [
+          {
+            id: getUuid(),
+            name: replaceDoubleToSingleQuotes(generate(statement).code),
+            shape: 'asymetric',
+            style: { fill: '#99FF99' }
+          }
+        ]
       }
       return {
-        nodes: [returnNode],
+        nodes: [...returnNode],
         lines: [],
-        entryNodes: [returnNode],
-        exitNodes: [],
+        entryNodes: [...returnNode],
+        exitNodes: [...returnExitNodes],
+        breakNodes: [],
+        subNodes: []
+      }
+    // case 'MemberExpression':
+    //   console.error('MemberExpression')
+    //   statement.selfId = getUuid()
+    //   console.log(statement)
+    //   const memberExpressionNode = {
+    //     id: statement.selfId,
+    //     name: `${statement.variableName} = ${generate(statement).code}`,
+    //     shape: 'square'
+    //   }
+    //   return {
+    //     nodes: [memberExpressionNode],
+    //     lines: [],
+    //     entryNodes: [memberExpressionNode],
+    //     exitNodes: [memberExpressionNode],
+    //     breakNodes: [],
+    //     subNodes: []
+    //   }
+    case 'CallExpression':
+      // 函数调用
+      console.error('CallExpression')
+      console.error(statement.prefix)
+      if (statement.prefix) {
+        statement.arguments.forEach(item => {
+          item.prefix = statement.prefix
+        })
+      }
+      statement.selfId = getUuid()
+      const {
+        nodes: callExpressionNodes,
+        lines: callExpressionLines,
+        entryNodes: callExpressionEntryNodes,
+        exitNodes: callExpressionExitNodes
+      } = transformAstToGraph(statement.arguments)
+      console.error(callExpressionNodes)
+      let callExpressionNode = []
+      if (!callExpressionNodes.length) {
+        // `${statement.variableName} = ${generate(statement).code}`
+        callExpressionNode = [
+          {
+            id: statement.selfId,
+            name: `${generate(statement).code}`,
+            shape: 'square'
+          }
+        ]
+      }
+      return {
+        nodes: [...callExpressionNode, ...callExpressionNodes],
+        lines: [...callExpressionLines],
+        entryNodes: [...callExpressionNode, ...callExpressionEntryNodes],
+        exitNodes: [...callExpressionNode, ...callExpressionExitNodes],
         breakNodes: [],
         subNodes: []
       }
@@ -854,7 +990,7 @@ function setType(statement) {
       const conditionalNode = {
         id: statement.selfId,
         name: replaceDoubleToSingleQuotes(`${generate(statement.test).code}`),
-        shape: 'rhombus'
+        shape: 'square'
       }
       const conditionLines = []
       let leftConditionNodes = []
@@ -867,7 +1003,12 @@ function setType(statement) {
       let rightEntryNodes = []
       let leftExitNodes = []
       let rightExitNodes = []
-      if (statement.consequent.type === 'ConditionalExpression') {
+      const conditionExpressionTypes = [
+        'ConditionalExpression',
+        'CallExpression',
+        'MemberExpression'
+      ]
+      if (conditionExpressionTypes.includes(statement.consequent.type)) {
         ;({
           nodes: leftConditionNodes,
           lines: leftConditionLines,
@@ -886,11 +1027,13 @@ function setType(statement) {
         conditionConsequentNode = [
           {
             id: statement.consequent.selfId,
-            name: `${statement.variableName} = ${statement.consequent.value ||
-              statement.consequent.name}`,
+            name: `${statement.variableName} = ${
+              generate(statement.consequent).code
+            }`,
             shape: 'square'
           }
         ]
+        console.log(conditionConsequentNode)
         conditionLines.push({
           from: conditionalNode.id,
           to: conditionConsequentNode[0].id,
@@ -899,8 +1042,7 @@ function setType(statement) {
           arrow: true
         })
       }
-
-      if (statement.alternate.type === 'ConditionalExpression') {
+      if (conditionExpressionTypes.includes(statement.alternate.type)) {
         ;({
           nodes: rightConditionNodes,
           lines: rightConditionLines,
@@ -919,11 +1061,13 @@ function setType(statement) {
         conditionAlterNode = [
           {
             id: statement.alternate.selfId,
-            name: `${statement.variableName} = ${statement.alternate.value ||
-              statement.consequent.name}`,
+            name: `${statement.variableName} = ${
+              generate(statement.alternate).code
+            }`,
             shape: 'square'
           }
         ]
+        console.error(conditionAlterNode)
         conditionLines.push({
           from: conditionalNode.id,
           to: conditionAlterNode[0].id,
@@ -957,118 +1101,119 @@ function setType(statement) {
       }
     case 'LogicalExpression':
       console.log('LogicalExpression')
-      statement.left.variableName = statement.variableName
-      statement.right.variableName = statement.variableName
-      statement.left.nextOperator = statement.operator
-      statement.right.nextOperator = statement.operator
-      const orOperator = '||'
-      const andOperator = '&&'
-      statement.selfId = getUuid()
-      let leftLogicalNode = []
-      let rightLogicalNode = []
-      let leftLogicalNodes = []
-      let leftLogicalLines = []
-      let rightLogicalNodes = []
-      let rightLogicalLines = []
-      let leftLogicalExitNodes = []
-      let rightLogicalEntryNodes = []
-      let leftLogicalEntryNodes = []
-      let rightLogicalExitNodes = []
-      let leftJudgeNodes = []
-      let rightJudgeNodes = []
+      return emptyGraph
+    // statement.left.variableName = statement.variableName
+    // statement.right.variableName = statement.variableName
+    // statement.left.nextOperator = statement.operator
+    // statement.right.nextOperator = statement.operator
+    // const orOperator = '||'
+    // const andOperator = '&&'
+    // statement.selfId = getUuid()
+    // let leftLogicalNode = []
+    // let rightLogicalNode = []
+    // let leftLogicalNodes = []
+    // let leftLogicalLines = []
+    // let rightLogicalNodes = []
+    // let rightLogicalLines = []
+    // let leftLogicalExitNodes = []
+    // let rightLogicalEntryNodes = []
+    // let leftLogicalEntryNodes = []
+    // let rightLogicalExitNodes = []
+    // let leftJudgeNodes = []
+    // let rightJudgeNodes = []
 
-      // if (statement.operator === orOperator) {
-      if (statement.left.type === 'LogicalExpression') {
-        // 属于第一层的statement.left中的right对象都加上标识
-        statement.left.right.entry = 'left'
-        ;({
-          nodes: leftLogicalNodes,
-          lines: leftLogicalLines,
-          entryNodes: leftLogicalEntryNodes,
-          exitNodes: leftLogicalExitNodes
-        } = transformAstToGraph(statement.left))
-        console.error(transformAstToGraph(statement.left))
-      } else {
-        // 只处理第一层左侧的
-        if (
-          statement.extra &&
-          statement.extra.parenthesized &&
-          statement.nextOperator === orOperator
-        ) {
-        } else {
-          leftLogicalNode = [
-            {
-              id: getUuid(),
-              name: `${statement.variableName} = ${statement.left.name ||
-                statement.left.value}`,
-              shape: 'square'
-            }
-          ]
-        }
-        leftJudgeNodes = [
-          {
-            id: getUuid(),
-            name: `${statement.left.name || statement.left.value}`,
-            shape: 'square'
-          }
-        ]
-      }
+    // // if (statement.operator === orOperator) {
+    // if (statement.left.type === 'LogicalExpression') {
+    //   // 属于第一层的statement.left中的right对象都加上标识
+    //   statement.left.right.entry = 'left'
+    //   ;({
+    //     nodes: leftLogicalNodes,
+    //     lines: leftLogicalLines,
+    //     entryNodes: leftLogicalEntryNodes,
+    //     exitNodes: leftLogicalExitNodes
+    //   } = transformAstToGraph(statement.left))
+    //   console.error(transformAstToGraph(statement.left))
+    // } else {
+    //   // 只处理第一层左侧的
+    //   if (
+    //     statement.extra &&
+    //     statement.extra.parenthesized &&
+    //     statement.nextOperator === orOperator
+    //   ) {
+    //   } else {
+    //     leftLogicalNode = [
+    //       {
+    //         id: getUuid(),
+    //         name: `${statement.variableName} = ${statement.left.name ||
+    //           statement.left.value}`,
+    //         shape: 'square'
+    //       }
+    //     ]
+    //   }
+    //   leftJudgeNodes = [
+    //     {
+    //       id: getUuid(),
+    //       name: `${statement.left.name || statement.left.value}`,
+    //       shape: 'square'
+    //     }
+    //   ]
+    // }
 
-      if (statement.right.type === 'LogicalExpression') {
-        ;({
-          nodes: rightLogicalNodes,
-          lines: rightLogicalLines,
-          entryNodes: rightLogicalEntryNodes,
-          exitNodes: rightLogicalExitNodes
-        } = transformAstToGraph(statement.right))
-      } else {
-        console.error(
-          statement,
-          `${statement.right.name || statement.right.value}`
-        )
-        rightLogicalNode = [
-          {
-            id: getUuid(),
-            name: `${statement.variableName} = ${statement.right.name ||
-              statement.right.value}`,
-            shape: 'square'
-          }
-        ]
-        // 最后一个节点不作为判断节点, 直接返回
-        if (!statement.entry) {
-          rightJudgeNodes = [
-            {
-              id: getUuid(),
-              name: `${statement.right.name || statement.right.value}`,
-              shape: 'square'
-            }
-          ]
-        }
-      }
-      console.error([
-        ...leftLogicalNode,
-        ...rightLogicalNode,
-        ...leftJudgeNodes,
-        ...rightJudgeNodes,
-        ...leftLogicalNodes,
-        ...rightLogicalNodes
-      ])
-      return {
-        nodes: [
-          ...leftLogicalNode,
-          ...rightLogicalNode,
-          ...leftJudgeNodes,
-          ...rightJudgeNodes,
-          ...leftLogicalNodes,
-          ...rightLogicalNodes
-        ],
-        lines: [],
-        entryNodes: [],
-        exitNodes: [],
-        breakNodes: [],
-        subNodes: []
-      }
+    // if (statement.right.type === 'LogicalExpression') {
+    //   ;({
+    //     nodes: rightLogicalNodes,
+    //     lines: rightLogicalLines,
+    //     entryNodes: rightLogicalEntryNodes,
+    //     exitNodes: rightLogicalExitNodes
+    //   } = transformAstToGraph(statement.right))
+    // } else {
+    //   console.error(
+    //     statement,
+    //     `${statement.right.name || statement.right.value}`
+    //   )
+    //   rightLogicalNode = [
+    //     {
+    //       id: getUuid(),
+    //       name: `${statement.variableName} = ${statement.right.name ||
+    //         statement.right.value}`,
+    //       shape: 'square'
+    //     }
+    //   ]
+    //   // 最后一个节点不作为判断节点, 直接返回
+    //   if (!statement.entry) {
+    //     rightJudgeNodes = [
+    //       {
+    //         id: getUuid(),
+    //         name: `${statement.right.name || statement.right.value}`,
+    //         shape: 'square'
+    //       }
+    //     ]
+    //   }
+    // }
+    // console.error([
+    //   ...leftLogicalNode,
+    //   ...rightLogicalNode,
+    //   ...leftJudgeNodes,
+    //   ...rightJudgeNodes,
+    //   ...leftLogicalNodes,
+    //   ...rightLogicalNodes
+    // ])
+    // return {
+    //   nodes: [
+    //     ...leftLogicalNode,
+    //     ...rightLogicalNode,
+    //     ...leftJudgeNodes,
+    //     ...rightJudgeNodes,
+    //     ...leftLogicalNodes,
+    //     ...rightLogicalNodes
+    //   ],
+    //   lines: [],
+    //   entryNodes: [],
+    //   exitNodes: [],
+    //   breakNodes: [],
+    //   subNodes: []
+    // }
     default:
-      break
+      return emptyGraph
   }
 }

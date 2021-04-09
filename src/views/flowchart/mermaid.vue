@@ -19,7 +19,8 @@ import {
   threeStatement,
   logicalOperator,
   logicalOrOperator,
-  functionExpression
+  functionExpression,
+  test
 } from './sample'
 // import './testIndex'
 export default {
@@ -46,7 +47,7 @@ export default {
       // forOfStatement,
       // tryCatchStatement,
       // threeStatement
-      this.parseCode = getMermain(logicalOrOperator)
+      this.parseCode = getMermain(test)
       //       this.parseCode = `graph TD
 
       // froml2c0tol7c1([" function logicalOperator"])
