@@ -16,12 +16,16 @@ import {
   forInStatement,
   forOfStatement,
   tryCatchStatement,
-  threeStatement,
+  threeStat,
   logicalOperator,
   logicalOrOperator,
   functionExpression,
-  test
+  test,
+  forEach,
+  functionTest,
+  returnStat
 } from './sample'
+import { convertCodeToFlowTree } from 'js2flowchart'
 // import './testIndex'
 export default {
   name: 'VueMermaid',
@@ -31,6 +35,7 @@ export default {
     }
   },
   mounted() {
+    convertCodeToFlowTree(forEach)
     // getMermain(ifStatement1)
     this.load()
   },
@@ -46,8 +51,10 @@ export default {
       // forInStatement,
       // forOfStatement,
       // tryCatchStatement,
-      // threeStatement
-      this.parseCode = getMermain(test)
+      // threeStat
+      // forEach
+      // test
+      this.parseCode = getMermain(forEach)
       //       this.parseCode = `graph TD
 
       // froml2c0tol7c1([" function logicalOperator"])

@@ -1,3 +1,36 @@
+// 函数声明/函数表达式/箭头函数
+// function fn() {}
+
+// var fn = function () {
+//   console.log(1)
+
+// var fn = () => {
+//   console.log(2)
+// }
+// export function createServer() {
+//   console.log(3)
+// }
+
+const judgeNodes = ['']
+const functionTest = `
+export async function createServer() {
+  console.log(3)
+}
+`
+
+const threeStat = `
+function threeStat() {
+  const res = val ? (isNeed ? (isFlag ? 5 : 6) : 10) : isDemo ? 6 : 2
+}
+`
+
+const returnStat = `
+function returnTest() {
+  
+  return (flag ? obj1 : obj2).name
+  }
+`
+
 const ifStatement = `
 function test() {
   if (a == "1") {
@@ -81,7 +114,8 @@ function forIn() {
   var obj = { a: 1, b: 2, c: 3 }
 
   for (var prop in obj) {
-    console.log('obj.' + prop + ' = ' + obj[prop])
+    console.log(2)
+    console.log(3)
   }
   return res
 }
@@ -105,16 +139,6 @@ function tryCatch() {
   } catch (error) {
     console.error(error);
   }
-}
-`
-const threeStatement = `
-function threeStatement() {
-  const val = false
-  const isNeed = true
-  const isDemo = false
-  let isFlag = false
-  const res = val ? (isNeed ? (isFlag ? 5 : 6) : 10) : isDemo ? 6 : 2
-  return res
 }
 `
 
@@ -152,6 +176,22 @@ const arrowFn = `
     var a = 1
     console.log(1)
     console.log(2)
+  }
+`
+// console.log(1)
+// console.log(2)
+
+const forEach = `
+  function arrayForEach() {
+    let arr = [1, 2, 3]
+    arr.forEach(el => {
+      if (a == "1") {
+        console.log(1)
+      } else {
+        console.log(2)
+      }
+      console.log(3)
+    })
   }
 `
 
@@ -193,10 +233,13 @@ export {
   forInStatement,
   forOfStatement,
   tryCatchStatement,
-  threeStatement,
+  threeStat,
   logicalOperator,
   logicalOrOperator,
   functionExpression,
   arrowFn,
-  test
+  test,
+  forEach,
+  functionTest,
+  returnStat
 }

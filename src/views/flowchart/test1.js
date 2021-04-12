@@ -26,7 +26,6 @@ console.log('三目运算符')
         ...getLines([conditionConseQuentNode], 'true', conditionalNode.id),
         ...getLines([conditionAlterNode], 'false', conditionalNode.id)
       ]
-      // console.log(conditionLines)
       return {
         nodes: [
           conditionalNode,

@@ -10,12 +10,15 @@ import {
   forStatement,
   forInStatement,
   forOfStatement,
-  threeStatement,
+  threeStat,
   tryCatchStatement,
   logicalOperator,
   logicalOrOperator,
   functionExpression,
-  test
+  test,
+  forEach,
+  functionTest,
+  returnStat
 } from './sample'
 
 function transformCodeToAst(codeStr) {
@@ -24,7 +27,7 @@ function transformCodeToAst(codeStr) {
     plugins: ['classProperties', 'asyncGenerators', 'jsx', 'typescript']
   })
 }
-console.log(JSON.stringify(transformCodeToAst(test)))
+console.log(JSON.stringify(transformCodeToAst(forEach)))
 
 function isEmpty(value) {
   let flag = true
@@ -128,390 +131,327 @@ export function getMermain(code) {
   return transformGraphToMermaid(allNodesandLines)
 }
 
+const judgeNodes = ['']
+
 const obj = {
   type: 'File',
   start: 0,
-  end: 260,
-  loc: { start: { line: 1, column: 0 }, end: { line: 15, column: 0 } },
+  end: 179,
+  loc: { start: { line: 1, column: 0 }, end: { line: 12, column: 0 } },
   errors: [],
   program: {
     type: 'Program',
     start: 0,
-    end: 260,
-    loc: { start: { line: 1, column: 0 }, end: { line: 15, column: 0 } },
+    end: 179,
+    loc: { start: { line: 1, column: 0 }, end: { line: 12, column: 0 } },
     sourceType: 'module',
     interpreter: null,
     body: [
       {
         type: 'FunctionDeclaration',
-        start: 4,
-        end: 259,
-        loc: { start: { line: 2, column: 3 }, end: { line: 14, column: 5 } },
+        start: 3,
+        end: 178,
+        loc: { start: { line: 2, column: 2 }, end: { line: 11, column: 3 } },
         id: {
           type: 'Identifier',
-          start: 13,
-          end: 20,
+          start: 12,
+          end: 24,
           loc: {
-            start: { line: 2, column: 12 },
-            end: { line: 2, column: 19 },
-            identifierName: 'test555'
+            start: { line: 2, column: 11 },
+            end: { line: 2, column: 23 },
+            identifierName: 'arrayForEach'
           },
-          name: 'test555'
+          name: 'arrayForEach'
         },
         generator: false,
         async: false,
         params: [],
         body: {
           type: 'BlockStatement',
-          start: 23,
-          end: 259,
-          loc: { start: { line: 2, column: 22 }, end: { line: 14, column: 5 } },
+          start: 27,
+          end: 178,
+          loc: { start: { line: 2, column: 26 }, end: { line: 11, column: 3 } },
           body: [
             {
               type: 'ExpressionStatement',
-              start: 31,
-              end: 235,
+              start: 57,
+              end: 174,
               loc: {
-                start: { line: 3, column: 6 },
-                end: { line: 12, column: 7 }
+                start: { line: 4, column: 4 },
+                end: { line: 10, column: 6 }
               },
               expression: {
-                type: 'AssignmentExpression',
-                start: 31,
-                end: 235,
+                type: 'CallExpression',
+                start: 57,
+                end: 174,
                 loc: {
-                  start: { line: 3, column: 6 },
-                  end: { line: 12, column: 7 }
+                  start: { line: 4, column: 4 },
+                  end: { line: 10, column: 6 }
                 },
-                operator: '=',
-                left: {
-                  type: 'Identifier',
-                  start: 31,
-                  end: 35,
+                callee: {
+                  type: 'MemberExpression',
+                  start: 57,
+                  end: 68,
                   loc: {
-                    start: { line: 3, column: 6 },
-                    end: { line: 3, column: 10 },
-                    identifierName: 'html'
+                    start: { line: 4, column: 4 },
+                    end: { line: 4, column: 15 }
                   },
-                  name: 'html'
-                },
-                right: {
-                  type: 'CallExpression',
-                  start: 38,
-                  end: 235,
-                  loc: {
-                    start: { line: 3, column: 13 },
-                    end: { line: 12, column: 7 }
-                  },
-                  callee: {
-                    type: 'MemberExpression',
-                    start: 38,
-                    end: 50,
+                  object: {
+                    type: 'Identifier',
+                    start: 57,
+                    end: 60,
                     loc: {
-                      start: { line: 3, column: 13 },
-                      end: { line: 3, column: 25 }
+                      start: { line: 4, column: 4 },
+                      end: { line: 4, column: 7 },
+                      identifierName: 'arr'
                     },
-                    object: {
-                      type: 'Identifier',
-                      start: 38,
-                      end: 42,
-                      loc: {
-                        start: { line: 3, column: 13 },
-                        end: { line: 3, column: 17 },
-                        identifierName: 'html'
-                      },
-                      name: 'html'
-                    },
-                    computed: false,
-                    property: {
-                      type: 'Identifier',
-                      start: 43,
-                      end: 50,
-                      loc: {
-                        start: { line: 3, column: 18 },
-                        end: { line: 3, column: 25 },
-                        identifierName: 'replace'
-                      },
-                      name: 'replace'
-                    }
+                    name: 'arr'
                   },
-                  arguments: [
-                    {
-                      type: 'RegExpLiteral',
-                      start: 60,
-                      end: 64,
-                      loc: {
-                        start: { line: 4, column: 8 },
-                        end: { line: 4, column: 12 }
-                      },
-                      extra: { raw: '/a/g' },
-                      pattern: 'a',
-                      flags: 'g'
+                  computed: false,
+                  property: {
+                    type: 'Identifier',
+                    start: 61,
+                    end: 68,
+                    loc: {
+                      start: { line: 4, column: 8 },
+                      end: { line: 4, column: 15 },
+                      identifierName: 'forEach'
                     },
-                    {
-                      type: 'ArrowFunctionExpression',
-                      start: 74,
-                      end: 227,
-                      loc: {
-                        start: { line: 5, column: 8 },
-                        end: { line: 11, column: 9 }
-                      },
-                      id: null,
-                      generator: false,
-                      async: false,
-                      params: [
-                        {
-                          type: 'Identifier',
-                          start: 75,
-                          end: 76,
-                          loc: {
-                            start: { line: 5, column: 9 },
-                            end: { line: 5, column: 10 },
-                            identifierName: 'm'
-                          },
-                          name: 'm'
-                        },
-                        {
-                          type: 'Identifier',
-                          start: 78,
-                          end: 80,
-                          loc: {
-                            start: { line: 5, column: 12 },
-                            end: { line: 5, column: 14 },
-                            identifierName: '$1'
-                          },
-                          name: '$1'
-                        },
-                        {
-                          type: 'Identifier',
-                          start: 82,
-                          end: 84,
-                          loc: {
-                            start: { line: 5, column: 16 },
-                            end: { line: 5, column: 18 },
-                            identifierName: '$2'
-                          },
-                          name: '$2'
-                        }
-                      ],
-                      body: {
-                        type: 'BlockStatement',
-                        start: 89,
-                        end: 227,
+                    name: 'forEach'
+                  }
+                },
+                // 遇到forEach后, 如果存在回调函数,需要找到内部循环开始及结束节点
+                arguments: [
+                  {
+                    type: 'ArrowFunctionExpression',
+                    start: 69,
+                    end: 173,
+                    loc: {
+                      start: { line: 4, column: 16 },
+                      end: { line: 10, column: 5 }
+                    },
+                    id: null,
+                    generator: false,
+                    async: false,
+                    params: [
+                      {
+                        type: 'Identifier',
+                        start: 69,
+                        end: 71,
                         loc: {
-                          start: { line: 5, column: 23 },
-                          end: { line: 11, column: 9 }
+                          start: { line: 4, column: 16 },
+                          end: { line: 4, column: 18 },
+                          identifierName: 'el'
                         },
-                        body: [
-                          {
-                            type: 'IfStatement',
-                            start: 101,
-                            end: 217,
+                        name: 'el'
+                      }
+                    ],
+                    body: {
+                      // 标记
+                      type: 'BlockStatement',
+                      start: 75,
+                      end: 173,
+                      loc: {
+                        start: { line: 4, column: 22 },
+                        end: { line: 10, column: 5 }
+                      },
+                      body: [
+                        {
+                          type: 'IfStatement',
+                          start: 83,
+                          end: 167,
+                          loc: {
+                            start: { line: 5, column: 6 },
+                            end: { line: 9, column: 7 }
+                          },
+                          test: {
+                            type: 'BinaryExpression',
+                            start: 87,
+                            end: 95,
                             loc: {
-                              start: { line: 6, column: 10 },
-                              end: { line: 10, column: 11 }
+                              start: { line: 5, column: 10 },
+                              end: { line: 5, column: 18 }
                             },
-                            test: {
-                              type: 'BinaryExpression',
-                              start: 105,
-                              end: 134,
+                            left: {
+                              type: 'Identifier',
+                              start: 87,
+                              end: 88,
                               loc: {
-                                start: { line: 6, column: 14 },
-                                end: { line: 6, column: 43 }
+                                start: { line: 5, column: 10 },
+                                end: { line: 5, column: 11 },
+                                identifierName: 'a'
                               },
-                              left: {
-                                type: 'CallExpression',
-                                start: 105,
-                                end: 127,
-                                loc: {
-                                  start: { line: 6, column: 14 },
-                                  end: { line: 6, column: 36 }
-                                },
-                                callee: {
-                                  type: 'MemberExpression',
-                                  start: 105,
-                                  end: 115,
-                                  loc: {
-                                    start: { line: 6, column: 14 },
-                                    end: { line: 6, column: 24 }
-                                  },
-                                  object: {
-                                    type: 'Identifier',
-                                    start: 105,
-                                    end: 107,
-                                    loc: {
-                                      start: { line: 6, column: 14 },
-                                      end: { line: 6, column: 16 },
-                                      identifierName: '$2'
-                                    },
-                                    name: '$2'
-                                  },
-                                  computed: false,
-                                  property: {
-                                    type: 'Identifier',
-                                    start: 108,
-                                    end: 115,
-                                    loc: {
-                                      start: { line: 6, column: 17 },
-                                      end: { line: 6, column: 24 },
-                                      identifierName: 'indexOf'
-                                    },
-                                    name: 'indexOf'
-                                  }
-                                },
-                                arguments: [
-                                  {
-                                    type: 'StringLiteral',
-                                    start: 116,
-                                    end: 126,
-                                    loc: {
-                                      start: { line: 6, column: 25 },
-                                      end: { line: 6, column: 35 }
-                                    },
-                                    extra: {
-                                      rawValue: 'https://',
-                                      raw: "'https://'"
-                                    },
-                                    value: 'https://'
-                                  }
-                                ]
+                              name: 'a'
+                            },
+                            operator: '==',
+                            right: {
+                              type: 'StringLiteral',
+                              start: 92,
+                              end: 95,
+                              loc: {
+                                start: { line: 5, column: 15 },
+                                end: { line: 5, column: 18 }
                               },
-                              operator: '!==',
-                              right: {
-                                type: 'UnaryExpression',
-                                start: 132,
-                                end: 134,
+                              extra: { rawValue: '1', raw: '"1"' },
+                              value: '1'
+                            }
+                          },
+                          consequent: {
+                            type: 'BlockStatement',
+                            start: 97,
+                            end: 129,
+                            loc: {
+                              start: { line: 5, column: 20 },
+                              end: { line: 7, column: 7 }
+                            },
+                            body: [
+                              {
+                                type: 'ExpressionStatement',
+                                start: 107,
+                                end: 121,
                                 loc: {
-                                  start: { line: 6, column: 41 },
-                                  end: { line: 6, column: 43 }
+                                  start: { line: 6, column: 8 },
+                                  end: { line: 6, column: 22 }
                                 },
-                                operator: '-',
-                                prefix: true,
-                                argument: {
-                                  type: 'NumericLiteral',
-                                  start: 133,
-                                  end: 134,
+                                expression: {
+                                  type: 'CallExpression',
+                                  start: 107,
+                                  end: 121,
                                   loc: {
-                                    start: { line: 6, column: 42 },
-                                    end: { line: 6, column: 43 }
+                                    start: { line: 6, column: 8 },
+                                    end: { line: 6, column: 22 }
                                   },
-                                  extra: { rawValue: 1, raw: '1' },
-                                  value: 1
+                                  callee: {
+                                    type: 'MemberExpression',
+                                    start: 107,
+                                    end: 118,
+                                    loc: {
+                                      start: { line: 6, column: 8 },
+                                      end: { line: 6, column: 19 }
+                                    },
+                                    object: {
+                                      type: 'Identifier',
+                                      start: 107,
+                                      end: 114,
+                                      loc: {
+                                        start: { line: 6, column: 8 },
+                                        end: { line: 6, column: 15 },
+                                        identifierName: 'console'
+                                      },
+                                      name: 'console'
+                                    },
+                                    computed: false,
+                                    property: {
+                                      type: 'Identifier',
+                                      start: 115,
+                                      end: 118,
+                                      loc: {
+                                        start: { line: 6, column: 16 },
+                                        end: { line: 6, column: 19 },
+                                        identifierName: 'log'
+                                      },
+                                      name: 'log'
+                                    }
+                                  },
+                                  arguments: [
+                                    {
+                                      type: 'NumericLiteral',
+                                      start: 119,
+                                      end: 120,
+                                      loc: {
+                                        start: { line: 6, column: 20 },
+                                        end: { line: 6, column: 21 }
+                                      },
+                                      extra: { rawValue: 1, raw: '1' },
+                                      value: 1
+                                    }
+                                  ]
                                 }
                               }
+                            ],
+                            directives: []
+                          },
+                          alternate: {
+                            type: 'BlockStatement',
+                            start: 135,
+                            end: 167,
+                            loc: {
+                              start: { line: 7, column: 13 },
+                              end: { line: 9, column: 7 }
                             },
-                            consequent: {
-                              type: 'BlockStatement',
-                              start: 136,
-                              end: 176,
-                              loc: {
-                                start: { line: 6, column: 45 },
-                                end: { line: 8, column: 11 }
-                              },
-                              body: [
-                                {
-                                  type: 'ReturnStatement',
-                                  start: 150,
-                                  end: 164,
+                            body: [
+                              {
+                                type: 'ExpressionStatement',
+                                start: 145,
+                                end: 159,
+                                loc: {
+                                  start: { line: 8, column: 8 },
+                                  end: { line: 8, column: 22 }
+                                },
+                                expression: {
+                                  type: 'CallExpression',
+                                  start: 145,
+                                  end: 159,
                                   loc: {
-                                    start: { line: 7, column: 12 },
-                                    end: { line: 7, column: 26 }
+                                    start: { line: 8, column: 8 },
+                                    end: { line: 8, column: 22 }
                                   },
-                                  argument: {
-                                    type: 'BinaryExpression',
-                                    start: 157,
-                                    end: 164,
+                                  callee: {
+                                    type: 'MemberExpression',
+                                    start: 145,
+                                    end: 156,
                                     loc: {
-                                      start: { line: 7, column: 19 },
-                                      end: { line: 7, column: 26 }
+                                      start: { line: 8, column: 8 },
+                                      end: { line: 8, column: 19 }
                                     },
-                                    left: {
+                                    object: {
                                       type: 'Identifier',
-                                      start: 157,
-                                      end: 159,
+                                      start: 145,
+                                      end: 152,
                                       loc: {
-                                        start: { line: 7, column: 19 },
-                                        end: { line: 7, column: 21 },
-                                        identifierName: '$1'
+                                        start: { line: 8, column: 8 },
+                                        end: { line: 8, column: 15 },
+                                        identifierName: 'console'
                                       },
-                                      name: '$1'
+                                      name: 'console'
                                     },
-                                    operator: '+',
-                                    right: {
+                                    computed: false,
+                                    property: {
                                       type: 'Identifier',
-                                      start: 162,
-                                      end: 164,
+                                      start: 153,
+                                      end: 156,
                                       loc: {
-                                        start: { line: 7, column: 24 },
-                                        end: { line: 7, column: 26 },
-                                        identifierName: '$2'
+                                        start: { line: 8, column: 16 },
+                                        end: { line: 8, column: 19 },
+                                        identifierName: 'log'
                                       },
-                                      name: '$2'
+                                      name: 'log'
                                     }
-                                  }
-                                }
-                              ],
-                              directives: []
-                            },
-                            alternate: {
-                              type: 'BlockStatement',
-                              start: 182,
-                              end: 217,
-                              loc: {
-                                start: { line: 8, column: 17 },
-                                end: { line: 10, column: 11 }
-                              },
-                              body: [
-                                {
-                                  type: 'ReturnStatement',
-                                  start: 196,
-                                  end: 205,
-                                  loc: {
-                                    start: { line: 9, column: 12 },
-                                    end: { line: 9, column: 21 }
                                   },
-                                  argument: {
-                                    type: 'Identifier',
-                                    start: 203,
-                                    end: 205,
-                                    loc: {
-                                      start: { line: 9, column: 19 },
-                                      end: { line: 9, column: 21 },
-                                      identifierName: '$1'
-                                    },
-                                    name: '$1'
-                                  }
+                                  arguments: [
+                                    {
+                                      type: 'NumericLiteral',
+                                      start: 157,
+                                      end: 158,
+                                      loc: {
+                                        start: { line: 8, column: 20 },
+                                        end: { line: 8, column: 21 }
+                                      },
+                                      extra: { rawValue: 2, raw: '2' },
+                                      value: 2
+                                    }
+                                  ]
                                 }
-                              ],
-                              directives: []
-                            }
+                              }
+                            ],
+                            directives: []
                           }
-                        ],
-                        directives: []
-                      }
+                        }
+                      ],
+                      directives: []
                     }
-                  ]
-                }
-              }
-            },
-            {
-              type: 'ReturnStatement',
-              start: 242,
-              end: 253,
-              loc: {
-                start: { line: 13, column: 6 },
-                end: { line: 13, column: 17 }
-              },
-              argument: {
-                type: 'Identifier',
-                start: 249,
-                end: 253,
-                loc: {
-                  start: { line: 13, column: 13 },
-                  end: { line: 13, column: 17 },
-                  identifierName: 'html'
-                },
-                name: 'html'
+                  }
+                ]
               }
             }
           ],
