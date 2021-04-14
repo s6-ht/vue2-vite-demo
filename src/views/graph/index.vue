@@ -25,7 +25,7 @@ import {
   functionTest,
   returnStat,
   error,
-  emptyStat,
+  emptyStat
 } from './sample'
 // import { convertCodeToFlowTree } from 'js2flowchart'
 // import './testIndex'
@@ -33,7 +33,7 @@ export default {
   name: 'VueMermaid',
   data() {
     return {
-      parseCode: '',
+      parseCode: ''
     }
   },
   mounted() {
@@ -56,7 +56,7 @@ export default {
       // threeStat
       // forEach
       // test
-      this.parseCode = getMermain(error)
+      this.parseCode = getMermain(forEach)
       //       this.parseCode = `graph TD
 
       // froml2c0tol7c1([" function logicalOperator"])
@@ -84,8 +84,8 @@ export default {
           console.log(error)
         }
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

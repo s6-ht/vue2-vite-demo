@@ -215,15 +215,14 @@ const classTest = `
 // let falg1 = array1.every((currentValue) => currentValue < 40)
 // return 5
 
-// array1.forEach(item => {
-//   console.log(436534)
-// })
-
 // let index = array1.find(function () {
 //     return element => element > 10
 // })
 const forEach = `
 function arrayForEach() {
+  array1.forEach(item => {
+  console.log(436534)
+})
     let index = array1.map(function () {
       return element => element > 10
   })
@@ -271,5 +270,5 @@ export {
   returnStat,
   error,
   emptyStat,
-  classTest,
+  classTest
 }
