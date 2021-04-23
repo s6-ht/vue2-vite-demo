@@ -1,9 +1,15 @@
 <template>
   <div id="app">
+    <el-button>测试router</el-button>
     <router-view />
   </div>
 </template>
 
+<style lang="scss" scoped>
+.name {
+  color: red;
+}
+</style>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

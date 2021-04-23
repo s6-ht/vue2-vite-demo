@@ -15,7 +15,7 @@ const functionTest = `
 export async function createServer() {
   console.log(3) 
 }
-`
+`;
 
 const threeStat = `
 function threeStat() {
@@ -23,25 +23,22 @@ function threeStat() {
   const res = val ? (isNeed ? (isFlag ? 5 : 6) : 10) : isDemo ? 6 : 2
   return 44
 }
-`
+`;
 
 const returnStat = `
 function returnTest() {
   return (flag ? obj1 : obj2).name
   }
-`
+`;
 
 const ifStatement = `
 function test() {
   var b = 5
   if (a == "1") {
     return 1
-  } else {
-    return 2
   }
-  var a = 3
 }
-`
+`;
 
 // var a = 3
 // }
@@ -53,7 +50,7 @@ const ifStatement1 = `
     }
     var b = 2
   }
-`
+`;
 
 const ifStatement2 = `
   function test2(x, y) {
@@ -66,7 +63,7 @@ const ifStatement2 = `
     }
     return 5
   }
-`
+`;
 
 const whileState1 = `
   function while1() {
@@ -77,7 +74,7 @@ const whileState1 = `
     }
     return y
   }
-`
+`;
 const doWhileState1 = `
   function while1() {
     var a, b
@@ -86,7 +83,7 @@ const doWhileState1 = `
     } while(x < 5)
     return y
   }
-`
+`;
 
 const switch1 = `
   function switchCase1(type) {
@@ -103,7 +100,7 @@ const switch1 = `
     }
     return
   }
-`
+`;
 
 const forStatement = `
   function for1() {
@@ -113,7 +110,7 @@ const forStatement = `
     }
     return res
   }
-`
+`;
 const forInStatement = `
 function forIn() {
   var obj = { a: 1, b: 2, c: 3 }
@@ -124,7 +121,7 @@ function forIn() {
   }
   return res
 }
-`
+`;
 const forOfStatement = `
 function forOf() {
   let iterable = [10, 20, 30];
@@ -134,7 +131,7 @@ function forOf() {
 }
   return res
 }
-`
+`;
 const tryCatchStatement = `
 function tryCatch() {
   let res = 0
@@ -145,14 +142,14 @@ function tryCatch() {
     console.error(error);
   }
 }
-`
+`;
 
 const logicalOperator = `
 function logicalOperator() {
   let res = flag && isForce
   return res
 }
-`
+`;
 
 // let res = (isForce && isNeed) || (flag && isDemo && isText)
 // return res
@@ -162,22 +159,21 @@ function logicalOrOperator() {
 
     continue 
   }
-}`
+}`;
 
 const error = `
 function error() {
-  // throw TypeError('hello error')
   var obj = {
     name: 1
   }
 }
-`
+`;
 
 const emptyStat = `
 function emptyStat() {
   var a = [];
 }
-`
+`;
 
 const functionExpression = `
   const functionExpression = function () {
@@ -185,14 +181,14 @@ const functionExpression = `
     console.log(1)
     console.log(2)
   }
-`
+`;
 const arrowFn = `
   const arrowFn = function () {
     var a = 1
     console.log(1)
     console.log(2)
   }
-`
+`;
 
 const classTest = `
   class ClassTest {
@@ -200,7 +196,7 @@ const classTest = `
       this.options = options
     }
   }
-`
+`;
 // console.log(1)
 // console.log(2)
 
@@ -221,32 +217,95 @@ const classTest = `
 const forEach = `
 function arrayForEach() {
   array1.forEach(item => {
-  console.log(436534)
+  var a = 1
 })
-    let index = array1.map(function () {
-      return element => element > 10
-  })
-  return 1
-  }
-`
+}
+`;
+// isDemo isNeed
+// let res = isDemo || isNeed
 
-const test = `
-   function test555() {
-     
-      html = html.replace(
-        /(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g,
-        (m, $1, $2) => {
-          if ($2.indexOf('https://') !== -1) {
-            return $1 + $2
-          } else {
-            return $1
-          }
-        }
-      )
-      return html
-    
+// isDemo isNeed isFlag
+// let res = isDemo || isNeed || isFlag
+
+// isDemo isNeed
+// let res = isDemo && isNeed
+
+// isDemo isNeed isFlag
+// let res = isDemo && isNeed && isFlag
+
+// flag isTest isForce
+// let res = flag && (isTest || isForce)
+
+// isForce flag
+// let res = (isTest || isForce) && flag
+
+// isForce flag
+// let res = (isTest && isForce) || flag
+
+// isForce flag isTest isNeed
+// let res =  isForce || (flag && isTest && isNeed);
+
+// isNeed isForce
+// let res = (flag && isTest && isNeed) || isForce;
+
+// isForce flag isTest isNeed
+// let res = isForce && (flag || isTest || isNeed);
+
+// isNeed isForce
+// let res = (flag || isTest || isNeed) && isForce;
+
+// flag isForce
+// let res = ((isTest || isNeed) && flag) || isForce
+
+// isForce isNeed flag
+// let res =  isForce || ((isTest || isNeed) && flag)
+
+// flag isForce isDemo
+// let res =  ((isTest || isNeed) && flag) || (isForce && isDemo)
+
+// isDemo isNeed flag
+// let res = (isForce && isDemo) || ((isTest || isNeed) && flag)
+
+// isForce flag isDemo
+// let res = isForce || ((isTest || isNeed) && flag) || isDemo
+const test1 = `
+function test1() {
+  var a = 1
+  if(a === 1) {
+    return 1
+  }else if(a === 0) {
+    return 0
+  } else {
+    return 2
+  }
+  function test2() {
+    switch(type) {
+      case 'y':
+        res = 'y'
+        break
+      case 'N':
+        res = 'N'
+        break
+      default: 
+        break
     }
-`
+  }
+}
+`;
+
+// 将所有双引号转换为单引号, 再用双引号拼接
+function test() {
+  // can't use pathname from URL since it may be relative like ../
+  const pathname = url.replace(/#.*$/, "").replace(/\?.*$/, "");
+  const { search, hash, protocol } = new URL(url, "http://vitejs.dev");
+
+  // data URLs shouldn't be appended queries, #2658
+  if (protocol === "blob:" || protocol === "data:") {
+    return url;
+  }
+
+  return 3333;
+}
 
 export {
   ifStatement,
@@ -264,11 +323,11 @@ export {
   logicalOrOperator,
   functionExpression,
   arrowFn,
-  test,
+  test1,
   forEach,
   functionTest,
   returnStat,
   error,
   emptyStat,
   classTest
-}
+};
